@@ -1,0 +1,530 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mr. Lunch - POS</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Overlay de Bienvenida -->
+    <div class="welcome-overlay" id="welcomeOverlay" role="dialog" aria-modal="true">
+        <div class="welcome-card">
+            <div class="welcome-icon">
+                <i class="fa-solid fa-burger" aria-hidden="true"></i>
+            </div>
+            <h1>¡Bienvenido a Mr. Lunch!</h1>
+            <p>Sistema de Punto de Venta</p>
+            <div class="schedule-info">
+                <i class="fa-regular fa-clock" aria-hidden="true"></i> 
+                Horario de Operación: <strong>09:00 AM - 05:00 PM</strong>
+            </div>
+            <button class="btn btn-primary btn-lg" id="btnEnterSystem">
+                <i class="fa-solid fa-right-to-bracket" aria-hidden="true"></i> Iniciar Operaciones
+            </button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Topbar -->
+        <header class="topbar">
+            <div class="brand">
+                <i class="fa-solid fa-burger brand-icon" aria-hidden="true"></i>
+                <span class="brand-name">Mr.<strong>Lunch</strong></span>
+            </div>
+            
+            <div class="cash-status-badge badge-open" id="topbarCashBadge">
+                <i class="fa-solid fa-circle indicator" aria-hidden="true"></i>
+                <span id="topbarCashText">CAJA ABIERTA</span>
+            </div>
+
+            <div class="topbar-right">
+                <div class="system-time">
+                    <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                    <span id="liveClock">00:00:00 PM</span>
+                </div>
+                <div class="user-pill">
+                    <i class="fa-solid fa-user-circle" aria-hidden="true"></i>
+                    <span>Cajero Principal</span>
+                </div>
+            </div>
+        </header>
+
+        <div class="main-layout">
+            <!-- Sidebar Navigation -->
+            <nav class="sidebar" aria-label="Navegación Principal">
+                <ul class="nav-menu">
+                    <li class="nav-item active" data-target="view-dashboard" role="button" tabindex="0">
+                        <i class="fa-solid fa-chart-line" aria-hidden="true"></i>
+                        <span>Inicio</span>
+                    </li>
+                    <li class="nav-item" data-target="view-pos" role="button" tabindex="0">
+                        <i class="fa-solid fa-cash-register" aria-hidden="true"></i>
+                        <span>Punto de Venta</span>
+                    </li>
+                    <li class="nav-item" data-target="view-products" role="button" tabindex="0">
+                        <i class="fa-solid fa-burger" aria-hidden="true"></i>
+                        <span>Productos</span>
+                    </li>
+                    <li class="nav-item" data-target="view-sales" role="button" tabindex="0">
+                        <i class="fa-solid fa-receipt" aria-hidden="true"></i>
+                        <span>Ventas</span>
+                    </li>
+                    <li class="nav-item" data-target="view-cash" role="button" tabindex="0">
+                        <i class="fa-solid fa-vault" aria-hidden="true"></i>
+                        <span>Caja</span>
+                    </li>
+                    <li class="nav-item" data-target="view-reports" role="button" tabindex="0">
+                        <i class="fa-solid fa-chart-pie" aria-hidden="true"></i>
+                        <span>Reportes</span>
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- Main Content Area -->
+            <main class="content-area">
+                
+                <!-- VIEW: DASHBOARD -->
+                <section id="view-dashboard" class="view-page active">
+                    <header class="page-header">
+                        <h2>Dashboard Principal</h2>
+                        <p>Resumen operacional del turno (09:00 AM - 05:00 PM).</p>
+                    </header>
+
+                    <div class="kpi-grid">
+                        <article class="kpi-card">
+                            <div class="kpi-icon orange"><i class="fa-solid fa-dollar-sign" aria-hidden="true"></i></div>
+                            <div class="kpi-data">
+                                <span class="title">Ventas del Día</span>
+                                <span class="value" id="dashSalesTotal">$0.00</span>
+                            </div>
+                        </article>
+                        <article class="kpi-card">
+                            <div class="kpi-icon blue"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i></div>
+                            <div class="kpi-data">
+                                <span class="title">Pedidos Totales</span>
+                                <span class="value" id="dashOrderCount">0</span>
+                            </div>
+                        </article>
+                        <article class="kpi-card">
+                            <div class="kpi-icon green"><i class="fa-solid fa-cash-register" aria-hidden="true"></i></div>
+                            <div class="kpi-data">
+                                <span class="title">Efectivo en Caja</span>
+                                <span class="value" id="dashCashTotal">$0.00</span>
+                            </div>
+                        </article>
+                        <article class="kpi-card">
+                            <div class="kpi-icon purple"><i class="fa-solid fa-receipt" aria-hidden="true"></i></div>
+                            <div class="kpi-data">
+                                <span class="title">Ticket Promedio</span>
+                                <span class="value" id="dashAvgTicket">$0.00</span>
+                            </div>
+                        </article>
+                    </div>
+
+                    <div class="dashboard-grid">
+                        <div class="card recent-sales">
+                            <h3>Últimas Ventas</h3>
+                            <div class="sales-list" id="dashRecentSalesList"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- VIEW: POS -->
+                <section id="view-pos" class="view-page">
+                    <div class="pos-layout">
+                        <div class="pos-catalog">
+                            <div class="categories-bar" id="posCategories"></div>
+                            <div class="products-grid" id="posProductsGrid"></div>
+                        </div>
+
+                        <aside class="pos-cart-panel" aria-label="Carrito de compra">
+                            <div class="cart-header">
+                                <div>
+                                    <h3 id="cartOrderTitle">Pedido #----</h3>
+                                    <span class="cart-date" id="cartDate">--/--/----</span>
+                                </div>
+                                <button class="btn-text-danger" id="btnClearCart" type="button">
+                                    <i class="fa-solid fa-trash-can" aria-hidden="true"></i> Vaciar
+                                </button>
+                            </div>
+
+                            <div class="order-type-selector">
+                                <label for="selectMesa"><i class="fa-solid fa-utensils" aria-hidden="true"></i> Tipo de Orden:</label>
+                                <div class="order-type-buttons">
+                                    <button type="button" class="btn-order-type active" data-type="Llevar">
+                                        <i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Para Llevar
+                                    </button>
+                                    <button type="button" class="btn-order-type" data-type="Mesa">
+                                        <i class="fa-solid fa-chair" aria-hidden="true"></i> Comer Aquí
+                                    </button>
+                                </div>
+                                <div id="tableSelectorGroup" class="table-selector-group" style="display: none;">
+                                    <select id="selectMesa" class="form-control">
+                                        <option value="Mesa 1">Mesa 1</option>
+                                        <option value="Mesa 2">Mesa 2</option>
+                                        <option value="Mesa 3">Mesa 3</option>
+                                        <option value="Mesa 4">Mesa 4</option>
+                                        <option value="Barra">Barra</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="cart-items" id="cartItemsList"></div>
+
+                            <div class="cart-summary">
+                                <div class="summary-row">
+                                    <span>Subtotal</span>
+                                    <span id="cartSubtotal">$0.00</span>
+                                </div>
+                                <div class="summary-row total-row">
+                                    <span>TOTAL</span>
+                                    <span id="cartTotal">$0.00</span>
+                                </div>
+                                <button class="btn-pos-pay" id="btnOpenCheckout" type="button">
+                                    <i class="fa-solid fa-credit-card" aria-hidden="true"></i> COBRAR
+                                </button>
+                            </div>
+                        </aside>
+                    </div>
+                </section>
+
+                <!-- VIEW: PRODUCTS MANAGEMENT -->
+                <section id="view-products" class="view-page">
+                    <header class="page-header space-between">
+                        <div>
+                            <h2>Gestión de Productos</h2>
+                            <p>Administra, crea categorías y añade nuevos ítems al menú de Mr. Lunch.</p>
+                        </div>
+                        <div class="action-group">
+                            <button class="btn btn-secondary" id="btnOpenCategoryModal" type="button">
+                                <i class="fa-solid fa-folder-plus" aria-hidden="true"></i> Categorías
+                            </button>
+                            <button class="btn btn-primary" id="btnOpenNewProductModal" type="button">
+                                <i class="fa-solid fa-plus" aria-hidden="true"></i> Agregar Producto
+                            </button>
+                        </div>
+                    </header>
+                    <div class="card">
+                        <div class="products-grid" id="adminProductsGrid"></div>
+                    </div>
+                </section>
+
+                <!-- VIEW: SALES HISTORY -->
+                <section id="view-sales" class="view-page">
+                    <header class="page-header">
+                        <h2>Historial de Ventas</h2>
+                        <p>Tickets emitidos durante el turno actual.</p>
+                    </header>
+                    <div class="card table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Ticket</th>
+                                    <th scope="col">Fecha/Hora</th>
+                                    <th scope="col">Tipo / Mesa</th>
+                                    <th scope="col">Atendido por</th>
+                                    <th scope="col">Método</th>
+                                    <th scope="col">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesTableBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW: CASH CONTROL -->
+                <section id="view-cash" class="view-page">
+                    <header class="page-header space-between">
+                        <div>
+                            <h2>Control de Caja</h2>
+                            <p>Gestión de flujo financiero (Apertura: 09:00 AM - Cierre: 05:00 PM).</p>
+                        </div>
+                        <div class="action-group">
+                            <button class="btn btn-success" id="btnInCash" type="button">
+                                <i class="fa-solid fa-arrow-down" aria-hidden="true"></i> Entrada
+                            </button>
+                            <button class="btn btn-warning" id="btnOutCash" type="button">
+                                <i class="fa-solid fa-arrow-up" aria-hidden="true"></i> Salida
+                            </button>
+                            <button class="btn btn-danger" id="btnCloseDay" type="button">
+                                <i class="fa-solid fa-power-off" aria-hidden="true"></i> Cerrar Día
+                            </button>
+                        </div>
+                    </header>
+
+                    <div class="cash-summary-grid">
+                        <div class="cash-box-card">
+                            <div class="status-indicator-box">
+                                <span class="badge badge-open" id="cashPageBadge">CAJA ABIERTA</span>
+                                <small>Horario: <strong>09:00 AM - 05:00 PM</strong></small>
+                            </div>
+                            <hr class="divider">
+                            <div class="financial-summary">
+                                <div class="fin-row"><span>Fondo Inicial (Cambio):</span> <strong id="cashInitVal">$0.00</strong></div>
+                                <div class="fin-row"><span>Ventas en Efectivo:</span> <strong id="cashSalesVal">$0.00</strong></div>
+                                <div class="fin-row"><span>Entradas Extraordinarias:</span> <span class="text-green" id="cashInVal">+$0.00</span></div>
+                                <div class="fin-row"><span>Salidas / Gastos:</span> <span class="text-red" id="cashOutVal">-$0.00</span></div>
+                                <hr class="divider">
+                                <div class="fin-row total"><span>Efectivo Total Esperado:</span> <strong id="cashExpectedVal">$0.00</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="card cash-audit-card">
+                            <h3>Cuadre de Cierre</h3>
+                            <p class="text-muted">Ingresa el dinero en físico contado al finalizar la jornada:</p>
+                            
+                            <div class="form-group">
+                                <label for="inputCountedCash">Efectivo Contado ($)</label>
+                                <input type="number" id="inputCountedCash" class="form-control lg-input" placeholder="0.00" step="0.01">
+                            </div>
+
+                            <div class="audit-result-box" id="auditResultBox">
+                                <span>Diferencia:</span>
+                                <h3 id="auditDiffText">$0.00</h3>
+                                <div class="audit-badge" id="auditBadge">CAJA CUADRADA</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-title">Registro de Movimientos de Caja</h3>
+                    <div class="card table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Hora</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Monto</th>
+                                    <th scope="col">Concepto</th>
+                                </tr>
+                            </thead>
+                            <tbody id="cashMovementsTable"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- VIEW: REPORTS -->
+                <section id="view-reports" class="view-page">
+                    <header class="page-header">
+                        <h2>Reportes & Analíticas</h2>
+                        <p>Métricas operacionales de Mr. Lunch.</p>
+                    </header>
+
+                    <div class="reports-grid">
+                        <div class="card">
+                            <h3>Resumen del Turno</h3>
+                            <div class="financial-summary">
+                                <div class="fin-row"><span>Ventas Totales:</span> <strong id="reportSalesTotal">$0.00</strong></div>
+                                <div class="fin-row"><span>Ventas en Efectivo:</span> <strong id="reportCashSales">$0.00</strong></div>
+                                <div class="fin-row"><span>Entradas Extraordinarias:</span> <strong id="reportCashIn">$0.00</strong></div>
+                                <div class="fin-row"><span>Salidas / Gastos:</span> <strong id="reportCashOut">$0.00</strong></div>
+                                <hr class="divider">
+                                <div class="fin-row total"><span>Efectivo Esperado:</span> <strong id="reportExpectedCash">$0.00</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- MODAL: APERTURA DE CAJA (FONDO INICIAL) -->
+    <div class="modal-overlay" id="modalOpenCash" role="dialog" aria-modal="true">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h3>Apertura de Caja</h3>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">Ingresa el dinero inicial en caja destinado a dar cambio.</p>
+                <div class="form-group">
+                    <label for="inputInitCash">Fondo Inicial ($)</label>
+                    <input type="number" id="inputInitCash" class="form-control lg-input" placeholder="Ej. 500.00" step="0.01">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-block" id="btnConfirmOpenCash" type="button">
+                    <i class="fa-solid fa-lock-open" aria-hidden="true"></i> Abrir Caja e Iniciar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: ADD PRODUCT -->
+    <div class="modal-overlay" id="modalAddProduct" role="dialog" aria-modal="true">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h3>Nuevo Producto</h3>
+                <button class="close-modal" type="button" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newProdName">Nombre del Producto</label>
+                    <input type="text" id="newProdName" class="form-control" placeholder="Ej. Club Sándwich">
+                </div>
+                <div class="form-group">
+                    <label for="newProdPrice">Precio ($)</label>
+                    <input type="number" id="newProdPrice" class="form-control" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="newProdCategory">Categoría</label>
+                    <select id="newProdCategory" class="form-control"></select>
+                </div>
+                <div class="form-group">
+                    <label for="newProdImg">URL Imagen (Opcional)</label>
+                    <input type="url" id="newProdImg" class="form-control" placeholder="https://...">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" type="button">Cancelar</button>
+                <button class="btn btn-primary" id="btnSaveProduct" type="button">Guardar Producto</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: MANAGE CATEGORIES -->
+    <div class="modal-overlay" id="modalManageCategories" role="dialog" aria-modal="true">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h3>Gestionar Categorías</h3>
+                <button class="close-modal" type="button" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newCatName">Nueva Categoría</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" id="newCatName" class="form-control" placeholder="Ej. Promociones">
+                        <button class="btn btn-primary" id="btnAddCategory" type="button">Añadir</button>
+                    </div>
+                </div>
+                <hr class="divider">
+                <label>Categorías Existentes</label>
+                <div id="categoryListContainer" style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px; max-height: 200px; overflow-y: auto;"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" type="button">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: MOVIMIENTOS EXTRAORDINARIOS DE CAJA -->
+    <div class="modal-overlay" id="modalCashMovement" role="dialog" aria-modal="true">
+        <div class="modal-container modal-sm">
+            <div class="modal-header">
+                <h3 id="cashMovTitle">Movimiento Extraordinario de Caja</h3>
+                <button class="close-modal" type="button" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="inputMovAmount">Monto ($)</label>
+                    <input type="number" id="inputMovAmount" class="form-control" placeholder="0.00" step="0.01">
+                </div>
+                <div class="form-group">
+                    <label for="inputMovConcept">Concepto / Motivo</label>
+                    <input type="text" id="inputMovConcept" class="form-control" placeholder="Ej. Pago a proveedor de hielo">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" type="button">Cancelar</button>
+                <button class="btn btn-primary" id="btnSaveCashMovement" type="button">Registrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CHECKOUT -->
+    <div class="modal-overlay" id="modalCheckout" role="dialog" aria-modal="true">
+        <div class="modal-container modal-lg">
+            <div class="modal-header">
+                <h3>Cobrar Pedido</h3>
+                <button class="close-modal" type="button" aria-label="Cerrar">&times;</button>
+            </div>
+            <div class="modal-body checkout-grid">
+                <div class="checkout-info">
+                    <div class="checkout-total-banner">
+                        <span>Total a Pagar</span>
+                        <h2 id="modalCheckoutTotal">$0.00</h2>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Método de Pago</label>
+                        <div class="payment-selector">
+                            <button type="button" class="btn-pay-method active" data-method="Efectivo">
+                                <i class="fa-solid fa-money-bill-wave" aria-hidden="true"></i> Efectivo
+                            </button>
+                            <button type="button" class="btn-pay-method" data-method="Tarjeta">
+                                <i class="fa-regular fa-credit-card" aria-hidden="true"></i> Tarjeta
+                            </button>
+                            <button type="button" class="btn-pay-method" data-method="Transferencia">
+                                <i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Transf.
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="cashPaymentGroup" class="form-group">
+                        <label for="inputPaidAmount">Efectivo Recibido</label>
+                        <input type="text" id="inputPaidAmount" class="form-control lg-input" readonly placeholder="$0.00">
+                        <div class="change-due-box">
+                            <span>Cambio a devolver:</span>
+                            <strong id="textChangeDue">$0.00</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="numpad-container">
+                    <div class="numpad-grid">
+                        <button type="button" class="btn-numpad" data-val="1">1</button>
+                        <button type="button" class="btn-numpad" data-val="2">2</button>
+                        <button type="button" class="btn-numpad" data-val="3">3</button>
+                        <button type="button" class="btn-numpad" data-val="4">4</button>
+                        <button type="button" class="btn-numpad" data-val="5">5</button>
+                        <button type="button" class="btn-numpad" data-val="6">6</button>
+                        <button type="button" class="btn-numpad" data-val="7">7</button>
+                        <button type="button" class="btn-numpad" data-val="8">8</button>
+                        <button type="button" class="btn-numpad" data-val="9">9</button>
+                        <button type="button" class="btn-numpad" data-val=".">.</button>
+                        <button type="button" class="btn-numpad" data-val="0">0</button>
+                        <button type="button" class="btn-numpad btn-numpad-del" data-val="DEL" aria-label="Borrar">
+                            <i class="fa-solid fa-backspace" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="numpad-quick-cash">
+                        <button type="button" class="btn-quick-cash" data-exact="true">Exacto</button>
+                        <button type="button" class="btn-quick-cash" data-cash="100">$100</button>
+                        <button type="button" class="btn-quick-cash" data-cash="200">$200</button>
+                        <button type="button" class="btn-quick-cash" data-cash="500">$500</button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary close-modal" type="button">Cancelar</button>
+                <button class="btn btn-success" id="btnConfirmPayment" type="button">
+                    <i class="fa-solid fa-check" aria-hidden="true"></i> Confirmar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: RECEIPT -->
+    <div class="modal-overlay" id="modalReceipt" role="dialog" aria-modal="true">
+        <div class="modal-container modal-sm text-center">
+            <div class="receipt-success-icon">
+                <i class="fa-solid fa-circle-check" aria-hidden="true"></i>
+            </div>
+            <h2>¡Venta Completada!</h2>
+            <p class="text-muted" id="receiptTicketId">Ticket #0000</p>
+            <div class="ticket-preview" id="ticketDetailsBody"></div>
+            <button class="btn btn-primary btn-block" id="btnFinishReceipt" type="button">Nueva Venta</button>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
