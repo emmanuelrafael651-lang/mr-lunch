@@ -5,41 +5,39 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 
 
 # =========================================================
-# RUTA DE LA BASE DE DATOS
+# BASE DE DATOS
 # =========================================================
-#
-# En Railway:
-#   usaremos el Volume montado en /data
-#
-# En local:
-#   seguirá usando ./data/mr_lunch.db
-#
 
-if os.getenv("RAILWAY_VOLUME_MOUNT_PATH"):
-    DATABASE_PATH = os.path.join(
-        os.getenv("RAILWAY_VOLUME_MOUNT_PATH"),
-        "mr_lunch.db"
-    )
-else:
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+# En local seguimos usando SQLite.
+if not DATABASE_URL:
     os.makedirs("data", exist_ok=True)
-    DATABASE_PATH = os.path.join(
-        "data",
-        "mr_lunch.db"
-    )
-
-
-DATABASE_URL = f"sqlite:///{DATABASE_PATH}"
+    DATABASE_URL = "sqlite:///./data/mr_lunch.db"
 
 
 # =========================================================
 # ENGINE
 # =========================================================
 
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgres://",
+        "postgresql://",
+        1
+    )
+
+if DATABASE_URL.startswith("postgresql://"):
+    DATABASE_URL = DATABASE_URL.replace(
+        "postgresql://",
+        "postgresql+psycopg2://",
+        1
+    )
+
+
 engine = create_engine(
     DATABASE_URL,
-    connect_args={
-        "check_same_thread": False
-    }
+    pool_pre_ping=True
 )
 
 
@@ -62,7 +60,7 @@ Base = declarative_base()
 
 
 # =========================================================
-# DEPENDENCIA DE BASE DE DATOS
+# DEPENDENCIA
 # =========================================================
 
 def get_db():
