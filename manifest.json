@@ -1,0 +1,12 @@
+{
+  "name": "Mr. Lunch",
+  "short_name": "Mr. Lunch",
+  "description": "Sistema de Punto de Venta de Mr. Lunch",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#f97316",
+  "orientation": "landscape",
+  "scope": "/",
+  "lang": "es-MX"
+}
