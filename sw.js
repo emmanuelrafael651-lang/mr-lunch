@@ -1,4 +1,4 @@
-const CACHE_NAME = "mr-lunch-v1";
+const CACHE_NAME = "mr-lunch-v2";
 
 const APP_FILES = [
     "/",

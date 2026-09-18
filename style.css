@@ -26,9 +26,20 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh; overflow: hidden; }
+body {
+    background-color: var(--bg-main);
+    color: var(--text-dark);
+    height: 100dvh;
+    min-height: 100dvh;
+    overflow: hidden;
+}
 
-.app-container { display: flex; flex-direction: column; height: 100vh; }
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100dvh;
+    min-height: 100dvh;
+}
 
 /* WELCOME SCREEN */
 .welcome-overlay {
@@ -95,7 +106,13 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
 .dashboard-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; }
 
 /* POS LAYOUT */
-.pos-layout { display: grid; grid-template-columns: 1fr 390px; gap: 20px; height: calc(100vh - 100px); }
+.pos-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 20px;
+    height: calc(100dvh - 100px);
+    min-height: 0;
+}
 .pos-catalog { display: flex; flex-direction: column; gap: 15px; overflow: hidden; }
 .categories-bar { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 5px; }
 .cat-btn {
@@ -122,8 +139,10 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
     flex-direction: column;
     padding: 18px;
     min-height: 0;
+    height: 100%;
     overflow: hidden;
 }
+
 .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
 .order-type-selector { background: var(--panel-card); padding: 10px; border-radius: var(--radius-sm); margin-bottom: 12px; }
 .order-type-selector label { font-size: 12px; font-weight: 600; color: var(--text-muted); display: block; margin-bottom: 6px; }
@@ -133,13 +152,14 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
 .table-selector-group { margin-top: 8px; }
 
 .cart-items {
-    flex: 1;
+    flex: 1 1 0;
     min-height: 0;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 8px;
 }
+
 .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--panel-card); border-radius: var(--radius-sm); }
 .cart-item-qty { display: flex; align-items: center; gap: 8px; }
 .btn-qty { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--panel-bg); color: var(--text-dark); cursor: pointer; }
@@ -148,7 +168,7 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
     border-top: 1px solid var(--border-color);
     padding-top: 12px;
     margin-top: 10px;
-    flex-shrink: 0;
+    flex: 0 0 auto;
 }
 .summary-row { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); }
 .summary-row.total-row { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-top: 8px; }
@@ -319,62 +339,66 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
     backdrop-filter: blur(6px);
 }
 /* =========================================================
-   AJUSTE POS PARA TABLETS / PANTALLAS BAJAS
+   MR. LUNCH - AJUSTE CHROME ANDROID / PWA
    ========================================================= */
 
-@media (max-height: 850px) {
+@media (orientation: landscape) and (max-height: 850px) {
+
+    .topbar {
+        height: 54px;
+        min-height: 54px;
+    }
+
+    .main-layout {
+        height: calc(100dvh - 54px);
+        min-height: 0;
+    }
 
     .content-area {
         min-height: 0;
+        padding: 12px;
     }
 
     .pos-layout {
-        height: calc(100vh - 120px);
+        height: calc(100dvh - 78px);
         min-height: 0;
-    }
-
-    .pos-catalog {
-        min-height: 0;
-    }
-
-    .pos-catalog .products-grid {
-        min-height: 0;
+        gap: 12px;
     }
 
     .pos-cart-panel {
         height: 100%;
         min-height: 0;
-        overflow: hidden;
+        padding: 12px;
     }
 
     .cart-header {
-        flex-shrink: 0;
+        margin-bottom: 8px;
     }
 
     .order-type-selector {
-        flex-shrink: 0;
+        padding: 8px;
+        margin-bottom: 8px;
     }
 
     .cart-items {
+        flex: 1 1 0;
         min-height: 0;
-        flex: 1 1 auto;
         overflow-y: auto;
     }
 
     .cart-summary {
         flex: 0 0 auto;
-        flex-shrink: 0;
-        background: var(--panel-bg);
         padding-top: 8px;
         margin-top: 6px;
     }
 
-    .cart-summary .summary-row {
+    .summary-row {
         margin-bottom: 3px;
     }
 
-    .cart-summary .total-row {
+    .summary-row.total-row {
         margin-top: 4px;
+        font-size: 17px;
     }
 
     .btn-pos-pay {
@@ -382,10 +406,9 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
         align-items: center;
         justify-content: center;
         width: 100%;
-        height: 48px;
-        min-height: 48px;
+        height: 46px;
+        min-height: 46px;
         padding: 8px;
-        margin-top: 8px;
-        flex-shrink: 0;
+        margin-top: 6px;
     }
 }
