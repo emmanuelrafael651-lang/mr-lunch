@@ -144,7 +144,12 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
 .cart-item-qty { display: flex; align-items: center; gap: 8px; }
 .btn-qty { width: 26px; height: 26px; border-radius: 50%; border: 1px solid var(--border-color); background: var(--panel-bg); color: var(--text-dark); cursor: pointer; }
 
-.cart-summary { border-top: 1px solid var(--border-color); padding-top: 12px; margin-top: 10px; }
+.cart-summary {
+    border-top: 1px solid var(--border-color);
+    padding-top: 12px;
+    margin-top: 10px;
+    flex-shrink: 0;
+}
 .summary-row { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted); }
 .summary-row.total-row { font-size: 18px; font-weight: 700; color: var(--text-dark); margin-top: 8px; }
 .btn-pos-pay { width: 100%; background: var(--color-green); color: white; border: none; padding: 14px; border-radius: var(--radius-md); font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 12px; }
@@ -312,4 +317,31 @@ body { background-color: var(--bg-main); color: var(--text-dark); height: 100vh;
 #modalReceipt.modal-overlay {
     background: rgba(30, 41, 59, 0.75);
     backdrop-filter: blur(6px);
+}
+/* Ajuste para tablets y pantallas con poca altura */
+@media (max-height: 800px) {
+    .pos-cart-panel {
+        min-height: 0;
+        overflow: hidden;
+    }
+
+    .cart-items {
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .cart-summary {
+        flex-shrink: 0;
+        padding-top: 8px;
+        margin-top: 6px;
+    }
+
+    .cart-summary .summary-row {
+        margin-bottom: 4px;
+    }
+
+    .btn-pos-pay {
+        min-height: 48px;
+        height: 48px;
+    }
 }
