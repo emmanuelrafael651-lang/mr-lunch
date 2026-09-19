@@ -488,158 +488,151 @@ body {
     }
 }
 /* =========================================================
-   MR. LUNCH - PRODUCTOS RESPONSIVE
+   MR. LUNCH - AJUSTE FINAL DEL POS
    ========================================================= */
 
-/* Pantallas grandes */
+.products-grid,
+#posProductsGrid {
+    flex: 1 1 auto !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+
+    display: grid !important;
+    grid-auto-rows: max-content !important;
+
+    gap: 16px !important;
+
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+
+    align-content: start !important;
+
+    padding: 4px 4px 20px 4px !important;
+}
+
+
+/* =========================================
+   PC GRANDE
+   ========================================= */
+
 @media (min-width: 1400px) {
 
     .pos-layout {
-        grid-template-columns: minmax(0, 1fr) 360px;
+        grid-template-columns: minmax(0, 1fr) 340px !important;
+        gap: 16px !important;
     }
 
-    #posProductsGrid {
-        grid-template-columns: repeat(4, minmax(190px, 1fr)) !important;
-        gap: 18px;
-    }
-
-    #posProductsGrid .product-image {
-        height: 150px !important;
+    #posProductsGrid,
+    .products-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     }
 }
 
 
-/* PC / laptop normal */
-@media (min-width: 1100px) and (max-width: 1399px) {
+/* =========================================
+   PC / TABLET HORIZONTAL
+   ========================================= */
+
+@media (min-width: 800px) and (max-width: 1399px) {
 
     .pos-layout {
-        grid-template-columns: minmax(0, 1fr) 340px;
-        gap: 14px;
+        grid-template-columns: minmax(0, 1fr) 320px !important;
+        gap: 14px !important;
     }
 
-    #posProductsGrid {
-        grid-template-columns: repeat(3, minmax(190px, 1fr)) !important;
-        gap: 16px;
-    }
-
-    #posProductsGrid .product-image {
-        height: 145px !important;
+    #posProductsGrid,
+    .products-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     }
 }
 
 
-/* Tablet horizontal */
-@media (min-width: 800px) and (max-width: 1099px) {
+/* =========================================
+   TARJETAS
+   ========================================= */
 
-    .pos-layout {
-        grid-template-columns: minmax(0, 1fr) 300px;
-        gap: 12px;
-    }
-
-    .pos-cart-panel {
-        padding: 12px;
-    }
-
-    #posProductsGrid {
-        grid-template-columns: repeat(2, minmax(190px, 1fr)) !important;
-        gap: 14px;
-    }
-
-    #posProductsGrid .product-image {
-        height: 145px !important;
-    }
-
-    #posProductsGrid .product-info {
-        padding: 12px !important;
-    }
-
-    #posProductsGrid .product-info h4 {
-        font-size: 16px !important;
-    }
-
-    #posProductsGrid .product-price {
-        font-size: 18px !important;
-    }
-}
-
-
-/* Tablet más pequeña */
-@media (max-width: 799px) {
-
-    .pos-layout {
-        grid-template-columns: 1fr;
-        height: auto;
-    }
-
-    .pos-catalog {
-        min-height: 500px;
-    }
-
-    .pos-cart-panel {
-        min-height: 500px;
-    }
-
-    #posProductsGrid {
-        grid-template-columns: repeat(2, minmax(160px, 1fr)) !important;
-        gap: 12px;
-    }
-
-    #posProductsGrid .product-image {
-        height: 135px !important;
-    }
-
-    #posProductsGrid .product-info h4 {
-        font-size: 15px !important;
-    }
-
-    #posProductsGrid .product-price {
-        font-size: 17px !important;
-    }
-}
-
-
-/* =========================================================
-   TARJETAS DE PRODUCTO
-   ========================================================= */
-
-#posProductsGrid .product-card {
+#posProductsGrid .product-card,
+.products-grid .product-card {
     width: 100% !important;
     min-width: 0 !important;
-    background: var(--panel-bg) !important;
-    border: 1px solid var(--border-color) !important;
-    border-radius: var(--radius-md) !important;
-    overflow: hidden !important;
+
+    height: auto !important;
+    min-height: 245px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
 }
 
-#posProductsGrid .product-image {
+
+/* FOTO */
+
+#posProductsGrid .product-image,
+.products-grid .product-image {
     width: 100% !important;
+
+    height: 165px !important;
+    min-height: 165px !important;
+
+    flex: 0 0 165px !important;
+
     overflow: hidden !important;
 }
 
-#posProductsGrid .product-image img {
+#posProductsGrid .product-image img,
+.products-grid .product-image img {
     width: 100% !important;
     height: 100% !important;
+
     object-fit: cover !important;
     display: block !important;
 }
 
-#posProductsGrid .product-info {
-    padding: 13px !important;
+
+/* INFORMACIÓN */
+
+#posProductsGrid .product-info,
+.products-grid .product-info {
+    padding: 12px !important;
+    min-height: 80px !important;
 }
 
-#posProductsGrid .product-info h4 {
-    margin: 0 0 6px 0 !important;
-    font-weight: 700 !important;
+#posProductsGrid .product-info h4,
+.products-grid .product-info h4 {
+    font-size: 16px !important;
     line-height: 1.25 !important;
-    color: var(--text-dark) !important;
+    font-weight: 700 !important;
+
+    margin: 0 0 6px 0 !important;
 }
 
-#posProductsGrid .product-category {
+#posProductsGrid .product-category,
+.products-grid .product-category {
     font-size: 12px !important;
     margin-bottom: 6px !important;
 }
 
-#posProductsGrid .product-price {
+#posProductsGrid .product-price,
+.products-grid .product-price {
+    font-size: 18px !important;
     font-weight: 800 !important;
-    color: var(--primary) !important;
+}
+
+
+/* =========================================
+   TABLET HORIZONTAL
+   ========================================= */
+
+@media (min-width: 800px) and (max-width: 1100px) {
+
+    #posProductsGrid .product-image,
+    .products-grid .product-image {
+        height: 150px !important;
+        min-height: 150px !important;
+        flex-basis: 150px !important;
+    }
+
+    #posProductsGrid .product-card,
+    .products-grid .product-card {
+        min-height: 230px !important;
+    }
 }
