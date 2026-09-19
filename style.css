@@ -470,24 +470,124 @@ body {
         margin-top: 6px;
     }
 }
-/* =========================================
-   PRODUCTOS POS - TAMAÑO GRANDE
-   ========================================= */
+/* =========================================================
+   MR. LUNCH - PRODUCTOS RESPONSIVE
+   ========================================================= */
 
-#posProductsGrid {
-    display: grid !important;
-    grid-template-columns: repeat(3, minmax(220px, 1fr)) !important;
-    gap: 18px !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    align-content: start !important;
-    padding: 5px !important;
+/* Pantallas grandes */
+@media (min-width: 1400px) {
+
+    .pos-layout {
+        grid-template-columns: minmax(0, 1fr) 360px;
+    }
+
+    #posProductsGrid {
+        grid-template-columns: repeat(4, minmax(190px, 1fr)) !important;
+        gap: 18px;
+    }
+
+    #posProductsGrid .product-image {
+        height: 150px !important;
+    }
 }
+
+
+/* PC / laptop normal */
+@media (min-width: 1100px) and (max-width: 1399px) {
+
+    .pos-layout {
+        grid-template-columns: minmax(0, 1fr) 340px;
+        gap: 14px;
+    }
+
+    #posProductsGrid {
+        grid-template-columns: repeat(3, minmax(190px, 1fr)) !important;
+        gap: 16px;
+    }
+
+    #posProductsGrid .product-image {
+        height: 145px !important;
+    }
+}
+
+
+/* Tablet horizontal */
+@media (min-width: 800px) and (max-width: 1099px) {
+
+    .pos-layout {
+        grid-template-columns: minmax(0, 1fr) 300px;
+        gap: 12px;
+    }
+
+    .pos-cart-panel {
+        padding: 12px;
+    }
+
+    #posProductsGrid {
+        grid-template-columns: repeat(2, minmax(190px, 1fr)) !important;
+        gap: 14px;
+    }
+
+    #posProductsGrid .product-image {
+        height: 145px !important;
+    }
+
+    #posProductsGrid .product-info {
+        padding: 12px !important;
+    }
+
+    #posProductsGrid .product-info h4 {
+        font-size: 16px !important;
+    }
+
+    #posProductsGrid .product-price {
+        font-size: 18px !important;
+    }
+}
+
+
+/* Tablet más pequeña */
+@media (max-width: 799px) {
+
+    .pos-layout {
+        grid-template-columns: 1fr;
+        height: auto;
+    }
+
+    .pos-catalog {
+        min-height: 500px;
+    }
+
+    .pos-cart-panel {
+        min-height: 500px;
+    }
+
+    #posProductsGrid {
+        grid-template-columns: repeat(2, minmax(160px, 1fr)) !important;
+        gap: 12px;
+    }
+
+    #posProductsGrid .product-image {
+        height: 135px !important;
+    }
+
+    #posProductsGrid .product-info h4 {
+        font-size: 15px !important;
+    }
+
+    #posProductsGrid .product-price {
+        font-size: 17px !important;
+    }
+}
+
+
+/* =========================================================
+   TARJETAS DE PRODUCTO
+   ========================================================= */
 
 #posProductsGrid .product-card {
     width: 100% !important;
     min-width: 0 !important;
-    min-height: 230px !important;
     background: var(--panel-bg) !important;
     border: 1px solid var(--border-color) !important;
     border-radius: var(--radius-md) !important;
@@ -496,7 +596,6 @@ body {
 
 #posProductsGrid .product-image {
     width: 100% !important;
-    height: 150px !important;
     overflow: hidden !important;
 }
 
@@ -508,24 +607,22 @@ body {
 }
 
 #posProductsGrid .product-info {
-    padding: 14px !important;
+    padding: 13px !important;
 }
 
 #posProductsGrid .product-info h4 {
-    font-size: 17px !important;
+    margin: 0 0 6px 0 !important;
     font-weight: 700 !important;
     line-height: 1.25 !important;
-    margin: 0 0 7px 0 !important;
     color: var(--text-dark) !important;
 }
 
 #posProductsGrid .product-category {
     font-size: 12px !important;
-    margin-bottom: 7px !important;
+    margin-bottom: 6px !important;
 }
 
 #posProductsGrid .product-price {
-    font-size: 19px !important;
     font-weight: 800 !important;
     color: var(--primary) !important;
 }
