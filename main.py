@@ -6,9 +6,18 @@ from sqlalchemy import text, inspect
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import datetime
+from zoneinfo import ZoneInfo
 
 from database import engine, Base, get_db
 import models
+
+
+# Zona horaria oficial de Mr. Lunch
+MEXICO_TZ = ZoneInfo("America/Mexico_City")
+
+
+def mexico_now():
+    return datetime.now(MEXICO_TZ).replace(tzinfo=None)
 
 
 # =========================================================
@@ -557,7 +566,7 @@ def create_sale(
 
     new_sale = models.Sale(
         ticket=ticket,
-        date=datetime.now(),
+        date=mexico_now(),
         order_type=sale_data.order_type,
         table=sale_data.table,
         payment_method=sale_data.payment_method,
@@ -790,7 +799,7 @@ def create_cash_movement(
         type=movement_type,
         amount=amount,
         concept=concept,
-        date=datetime.now(),
+        date=mexico_now(),
         cash_register_id=cash.id
     )
 
@@ -885,7 +894,7 @@ def close_cash(
         )
 
     cash.is_open = False
-    cash.closed_at = datetime.now()
+    cash.closed_at = mexico_now()
 
     db.commit()
     db.refresh(cash)
